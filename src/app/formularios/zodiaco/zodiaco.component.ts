@@ -25,7 +25,7 @@ export class ZodiacoComponent {
   formulario!: FormGroup;
 
   resultado: ResultadoZodiaco | null = null;
-
+  resultado2: string | null=null;
   constructor() { }
 
   ngOnInit(): void {
@@ -41,23 +41,61 @@ export class ZodiacoComponent {
 
     });
   }
+  validaAnio ():void{
+    let anio = parseInt(this.formulario.get('anio')?.value);
+    if (anio<1924) {
+      this.resultado2="Fecha invalida";
+      this.resultado=null;
+    }else if(anio > 2024){
+      this.resultado2="Aun no naces";
+      this.resultado=null;
+    }else{
+      this.generarZodiaco();
+      this.dameFechaActual();
+      this.resultado2=null;
+    }
+  }
+  dameFechaActual(): void{
+    let hoy = new Date();
+    let dia = parseInt(this.formulario.get('dia')?.value);
+    let mes = parseInt(this.formulario.get('mes')?.value);
+    let anio = parseInt(this.formulario.get('anio')?.value);
+    hoy.getMonth();
+    
+    console.log(hoy.getMonth());
+  }
   generarZodiaco(): void {
     const signosChinos = [
       "Rata", "Buey", "Tigre", "Conejo", "Dragón",
       "Serpiente", "Caballo", "Cabra", "Mono",
       "Gallo", "Perro", "Cerdo"
     ];
+    let mes = this.formulario.get('mes')?.value;
+    let hoy = new Date();
+    let mesMenos = mes-1;
     
     let nombre = this.formulario.get('nombre')?.value;
     let a_paterno = this.formulario.get('a_paterno')?.value;
     let a_materno = this.formulario.get('a_materno')?.value;
-    let dia = this.formulario.get('dia')?.value;
-    let mes = this.formulario.get('mes')?.value;
+    let dia = parseInt(this.formulario.get('dia')?.value);
+    
     let anio = parseInt(this.formulario.get('anio')?.value);
     const ciclo = (anio - 1924) % 12;
     let signo = signosChinos[ciclo];
     let sexo = this.formulario.get('sexo')?.value;
-    let edad = 2024 - anio;
+    let edad = 0;
+    let diaHoy = hoy.getDay;
+    
+
+    if (mesMenos==hoy.getMonth() && dia>11) {
+      edad = 2024 - anio-1;
+    }
+    else if (mesMenos>hoy.getMonth()) {
+      
+       edad = 2024 - anio-1;
+    }else{
+       edad = 2024 - anio;
+    }
     let animal = '';
     let img='';
     let nombreCom = nombre + " " + a_paterno + " " + a_materno;
@@ -101,13 +139,12 @@ export class ZodiacoComponent {
         break;
     
       default:
-        img='https://upload.wikimedia.org/wikipedia/commons/0/04/Rat.svg';
+        img='';
 
         break;
     }
     this.resultado = {
       nombre: nombreCom,
-
       dia: dia,
       mes: mes,
       anio: edad,
