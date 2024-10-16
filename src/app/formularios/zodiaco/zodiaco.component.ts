@@ -21,7 +21,7 @@ interface ResultadoZodiaco {
   templateUrl: './zodiaco.component.html',
   
 })
-export class ZodiacoComponent {
+export default class ZodiacoComponent {
   formulario!: FormGroup;
 
   resultado: ResultadoZodiaco | null = null;
