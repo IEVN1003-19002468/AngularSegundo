@@ -1,0 +1,108 @@
+<!-- Formulario y tabla -->
+<div class="max-w-8xl mx-auto bg-white shadow-md rounded p-6">
+    <div class="grid grid-cols-2 gap-6">
+        <div>
+            <form action="" [formGroup]="formGroup">
+                <h2 class="text-lg font-semibold mb-4">Registrar Empleado</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Matrícula</label>
+                    <input type="text" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="matricula" (ngModelChange)="buscaModificaEmpleado()">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nombre</label>
+                    <input type="text" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="nombre">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Correo</label>
+                    <input type="email" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="email">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Edad</label>
+                    <input type="number" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="edad">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Horas trabajadas</label>
+                    <input type="number" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="horasTrabajadas">
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="registrarEmpleado()" *ngIf="muestraBoton">Registrar</button>
+            </form>
+        </div>
+
+        <div>
+            <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="mostrarEmpleados()">Imprimir</button>
+            <h2 class="text-lg font-semibold mb-4">Lista de Empleados</h2>
+            <table class="w-full table-auto border-collapse border border-gray-300" *ngIf="muestraTabla">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="border border-gray-300 p-2">Matrícula</th>
+                        <th class="border border-gray-300 p-2">Nombre</th>
+                        <th class="border border-gray-300 p-2">Correo</th>
+                        <th class="border border-gray-300 p-2">Edad</th>
+                        <th class="border border-gray-300 p-2">Horas trabajadas</th>
+                        <th class="border border-gray-300 p-2">Horas x pagar</th>
+                        <th class="border border-gray-300 p-2">Horas extras</th>
+                        <th class="border border-gray-300 p-2">Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let empleado of empleados">
+                        <td class="border border-gray-300 p-2">{{empleado.matricula}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.nombre}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.email}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.edad}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.horasTrabajadas}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.horasXPagar}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.horasExtras}}</td>
+                        <td class="border border-gray-300 p-2">{{empleado.sueldo}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="bg-gray-200">
+                        <td colspan="7" class="border border-gray-300 p-2 text-right font-semibold">Total a Pagar:</td>
+                        <td class="border border-gray-300 p-2">{{nominaTotal}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="mt-4 flex space-x-4">
+                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="modificarEmpleado()">Modificar</button>
+                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" (click)="eliminarEmpleado()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="modalAbierto" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+        <h2 class="text-lg font-semibold mb-4">Modal Título</h2>
+        <form action="" [formGroup]="formGroup">
+            <h2 class="text-lg font-semibold mb-4">Registrar Empleado</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700">Matrícula</label>
+                <input type="text" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="matricula" >
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Nombre</label>
+                <input type="text" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="nombre" >
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Correo</label>
+                <input type="email" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="email">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Edad</label>
+                <input type="number" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="edad">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Horas trabajadas</label>
+                <input type="number" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="horasTrabajadas">
+            </div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="registrarEmpleado()">Registrar</button>
+        </form>
+        <div class="mt-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
